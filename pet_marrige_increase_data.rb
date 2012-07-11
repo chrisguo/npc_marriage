@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # 宠物结婚属性增加的上限和下限
-# level_limit, min_increase, max_increase
+# current_attribute_increase_value, min_increase, max_increase
 $pet_marrige_increase_data=[
 %w(10	3.425 	7.761 ),
 %w(20	2.944 	6.715 ),
