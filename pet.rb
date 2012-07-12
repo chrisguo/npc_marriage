@@ -77,9 +77,9 @@
 
 =end
 
-require "pet_level_exp_data.rb"   #加载等级与对应经验的数据
-require "pet_marrige_increase_data.rb"   #加载成长上限对应的成长范围
-require "pet_lingxing_requirement_data.rb"   #加载结婚主副伙伴星级需求数据
+require "./pet_level_exp_data.rb"   #加载等级与对应经验的数据
+require "./pet_marrige_increase_data.rb"   #加载成长上限对应的成长范围
+require "./pet_lingxing_requirement_data.rb"   #加载结婚主副伙伴星级需求数据
 
 
 class Pet
@@ -201,8 +201,11 @@ class Pet
 # 根据伙伴当前的属性增长数值，查询增长的上下限数值，返回的是一个数组，
 # 数组中第一个是下限，第二个是上限，都是浮点数。
   def get_star_increase_range(current_attribute_increase_value)
-    0.upto(25) do |i|
-      if current_attribute_increase_value >$pet_marrige_increase_data[i][0].to_f and  current_attribute_increase_value <$pet_marrige_increase_data[i+1][0].to_f then
+   puts  "current_attribute_increase_value="+current_attribute_increase_value.to_s
+   0.upto(25) do |i|
+      puts i.to_s
+      puts $pet_marrige_increase_data[i][0].to_f.to_s
+      if current_attribute_increase_value >=$pet_marrige_increase_data[i][0].to_f and  current_attribute_increase_value <= $pet_marrige_increase_data[i+1][0].to_f then
       
       return  $pet_marrige_increase_data[i+1][1].to_f, $pet_marrige_increase_data[i+1][2].to_f
      
@@ -328,11 +331,15 @@ class Pet
     attribute_array <<  an_other_pet.increase_speed.to_f
     # 利用ruby 数组的max功能。
     max_a=attribute_array.max
+    puts "hahaha!Max is #{max_a}"
     if max_a == an_other_pet.increase_attack.to_f
+           puts "攻击最大"
            return 0
     elsif  max_a == an_other_pet.increase_defend.to_f
+           puts "防御最大"
            return 1
     else
+           puts "速度最大"
            return 2
     end
 
@@ -372,16 +379,20 @@ class Pet
     
      #条件一：性别相同不能结婚。 
      if @sex==an_other_pet.sex then
+         puts "性别一样啊，咋结婚。"
          return false
      end
      #条件二：主伙伴必须达到５０级
      if @level<50 then
+        puts "基因保持者等级不到50,咋结婚。"
         return false
      end
      #条件三：配偶必须达到２０级
      if an_other_pet.level<30 then
+        puts "基因跳优者等级不到30,咋结婚。"
         return false
      end
+     return true
      # 再检查星级
      #return false if 星级不匹配 
      
