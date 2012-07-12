@@ -112,7 +112,8 @@ class Pet
      @cur_attack=@init_attack
      @cur_defend=@init_defend
      @cur_speed=@init_speed
-     # 诞生的时候，各个属性的成长数值，可以排列组合6种情况。属性成长数值的差异是伙伴差异的根本因素。
+     # 诞生的时候，各个属性的成长数值，可以排列组合6种情况。
+     # 属性成长数值的差异是伙伴差异的根本因素。
      generate_initial_increase_data
      
      # 诞生的时候，前世最高等级为0
@@ -126,7 +127,7 @@ class Pet
     return @name
   end
 # 
-#  产生各个属性的成长数值，可以排列组合6种情况。属性成长数值的差异是伙伴差异的根本因素。
+#  产生初始的各个属性的成长数值，可以排列组合6种情况。属性成长数值的差异是伙伴差异的根本因素。
 =begin
   具体类别： 
 １、	攻防型伙伴：攻击成长最高、速度成长最低；
@@ -197,7 +198,7 @@ class Pet
     
   end
 
-# 根据当前星级，查询增长的上下限数值，返回的是一个数组，
+# 根据伙伴当前的属性增长数值，查询增长的上下限数值，返回的是一个数组，
 # 数组中第一个是下限，第二个是上限，都是浮点数。
   def get_star_increase_range(current_attribute_increase_value)
     0.upto(25) do |i|
@@ -211,6 +212,7 @@ class Pet
 
   # 处理升级事宜,也就是当前的攻击力、防御力和速度，都增加了。增加的数值，分别等于各自的成长数值。
   def level_up
+     # 当前属性数值，增加。增加的数值，是成长数值。
      @cur_attack += @increase_attack
      @cur_defend += @increase_defend
      @cur_speed  += @increase_speed
@@ -349,8 +351,20 @@ class Pet
 “主伙伴和副伙伴必须是异性才能结婚。”
 “主伙伴的等级不够，50级才能结婚。”
 “副伙伴的等级不够，20级才能“副伙伴的等级不够，20级才能结婚”
-“伙伴与主人的亲密度为100的时候才能结婚。”
 “副伙伴星级不够，不能结婚。”
+
+
+补充：
+针对大明，要做下面的改进。
+
+结婚时：
+1.      男方(基因保底)：性别男、阉派。
+        女方(基因拉优)：性别女，阉派。
+
+２、	主伙伴必须达到５０级；
+３、	配偶必须达到3０级；
+
+
 
 =end
   
@@ -365,11 +379,11 @@ class Pet
         return false
      end
      #条件三：配偶必须达到２０级
-     if an_other_pet.level<20 then
+     if an_other_pet.level<30 then
         return false
      end
      # 再检查星级
-     return false if 星级不匹配 
+     #return false if 星级不匹配 
      
   end
   
