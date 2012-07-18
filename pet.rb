@@ -95,6 +95,7 @@ class Pet
   attr_accessor :攻击成长, :防御成长, :速度成长   #伙伴的攻击成长数值，防御成长数值,速度成长数值，浮点数。
   attr_accessor :星级     #伙伴的星级。星级等于三种属性成长之和，除以10.0后取整。
   attr_accessor :累积经验     #伙伴成长到当前等级，耗费的总经验。
+  attr_accessor :结婚次数与星级记录     #一个数组，记录结婚次数与玩家星级，最后导出，得出进度曲线。
         
   def initialize(name) #伙伴诞生，或许是结婚诞生的，哈哈。
  
@@ -123,6 +124,7 @@ class Pet
      @星级 = ((@攻击成长+@防御成长+@速度成长)/10.0).ceil
 
      @累积经验 = 0
+     @结婚次数与星级记录=[]
 
   end 
 
@@ -337,9 +339,24 @@ class Pet
      @cur_attack=@init_attack
      @cur_defend=@init_defend
      @cur_speed=@init_speed
-    
+
+     # 记录结婚次数与星级记录
+     temp=[]
+     temp << @世代.to_i
+     temp << @星级.to_i
+     # 记录到数组中去。 
+     @结婚次数与星级记录 << temp 
 
   end 
+
+  # 把结婚次数和星级记录写到csv文件中。
+  def write_version_star_record
+       f=File.new("version_star_record.csv","a")
+       @结婚次数与星级记录.each {|r|
+          f.write(r[0].to_s+","+r[1].to_s+"\n")
+       }
+       f.close
+  end
 
   # 顿悟
   # 条件：伙伴到了某个等级，例如50级, 并且小于前世最高等级，则一下子回忆起他前世的最高等级，这叫顿悟。

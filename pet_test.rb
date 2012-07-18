@@ -135,7 +135,9 @@ puts ""
 }
 
 
+xiao_zhang.write_version_star_record
 
+puts "Done!"
 
 
 
