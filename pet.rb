@@ -350,8 +350,10 @@ class Pet
   end 
 
   # 把结婚次数和星级记录写到csv文件中。
+  # 文件名含伙伴名，这样用于区分。
   def write_version_star_record
-       f=File.new("version_star_record.csv","a")
+       file_name=@name.to_s+"_version_star_record.csv"
+       f=File.new(file_name,"a")
        @结婚次数与星级记录.each {|r|
           f.write(r[0].to_s+","+r[1].to_s+"\n")
        }
