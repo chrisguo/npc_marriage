@@ -288,34 +288,41 @@ class Pet
    
    #首先查副伙伴的三项属性成长中，哪个数值最大。
    max_increase=get_max_attribute_increase(an_other_pet)
+
    # 根据副伙伴最大属性成长，重新计算后代的属性成长数值。
    case  max_increase
        when  0  # 增加攻击力
              low, high=get_star_increase_range(@攻击成长)
              if ring==true then   # 如果有皇后的祝福，成长就取最大
                 @攻击成长 +=high
-             else   #没有戒指，那么就在区间中随机取
+            
+             elsif ring==false  #没有戒指，那么就在区间中随机取
                 @攻击成长 +=(low*1000.0+rand((high-low)*1000))/1000.0
+             else  # 其它的数值，那么就取最低的，为的是取得最低的极限统计。
+               @攻击成长 += low 
             end
        when  1  # 增加防御力
               low, high=get_star_increase_range(@防御成长)
-             if ring==true then   # 如果有皇后的祝福，成长就取最大
-             @防御成长 +=high
-             else   #没有皇后之祝福，那么就在区间中随机取
-             @防御成长 +=(low*1000.0+rand((high-low)*1000))/1000.0
-
-             end    
-
+              if ring==true then   # 如果有皇后的祝福，成长就取最大
+                @防御成长 +=high
+            
+             elsif ring==false  #没有戒指，那么就在区间中随机取
+                @防御成长 +=(low*1000.0+rand((high-low)*1000))/1000.0
+             else  # 其它的数值，那么就取最低的，为的是取得最低的极限统计。
+                @防御成长 += low 
+            end
        when  2  # 增加速度
              low, high=get_star_increase_range(@速度成长)
-             if ring==true then   # 如果有皇后的祝福，成长就取最大
-             @速度成长 +=high
-             else   #没有皇后之祝福，那么就在区间中随机取
-             @速度成长 +=(low*1000.0+rand((high-low)*1000))/1000.0
-
-             end      
+            if ring==true then   # 如果有皇后的祝福，成长就取最大
+                @速度成长 +=high
             
+             elsif ring==false  #没有戒指，那么就在区间中随机取
+                @速度成长 +=(low*1000.0+rand((high-low)*1000))/1000.0
+             else  # 其它的数值，那么就取最低的，为的是取得最低的极限统计。
+                @速度成长 += low 
+            end
    end 
+
 
    # 重新计算星级，因为成长数值变了。
    # 星级，星级等于三种属性成长之和，除以10后向上取整
