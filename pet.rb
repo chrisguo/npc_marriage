@@ -119,6 +119,7 @@ class Pet
   attr_accessor :攻击成长, :防御成长, :速度成长   #伙伴的攻击成长数值，防御成长数值,速度成长数值，浮点数。
   attr_accessor :星级     #伙伴的星级。星级等于三种属性成长之和，除以10.0后取整。
   attr_accessor :累积经验     #伙伴成长到当前等级，耗费的总经验。
+  attr_accessor :结婚次数与星级记录     #一个数组，记录结婚次数与玩家星级，最后导出，得出进度曲线。
         
   def initialize(name) #伙伴诞生，或许是结婚诞生的，哈哈。
  
@@ -147,6 +148,7 @@ class Pet
      @星级 = ((@攻击成长+@防御成长+@速度成长)/10.0).ceil
 
      @累积经验 = 0
+     @结婚次数与星级记录=[]
 
   end 
 
@@ -310,34 +312,41 @@ class Pet
    
    #首先查副伙伴的三项属性成长中，哪个数值最大。
    max_increase=get_max_attribute_increase(an_other_pet)
+
    # 根据副伙伴最大属性成长，重新计算后代的属性成长数值。
    case  max_increase
        when  0  # 增加攻击力
              low, high=get_star_increase_range(@攻击成长)
              if ring==true then   # 如果有皇后的祝福，成长就取最大
                 @攻击成长 +=high
-             else   #没有戒指，那么就在区间中随机取
+            
+             elsif ring==false  #没有戒指，那么就在区间中随机取
                 @攻击成长 +=(low*1000.0+rand((high-low)*1000))/1000.0
+             else  # 其它的数值，那么就取最低的，为的是取得最低的极限统计。
+               @攻击成长 += low 
             end
        when  1  # 增加防御力
               low, high=get_star_increase_range(@防御成长)
-             if ring==true then   # 如果有皇后的祝福，成长就取最大
-             @防御成长 +=high
-             else   #没有皇后之祝福，那么就在区间中随机取
-             @防御成长 +=(low*1000.0+rand((high-low)*1000))/1000.0
-
-             end    
-
+              if ring==true then   # 如果有皇后的祝福，成长就取最大
+                @防御成长 +=high
+            
+             elsif ring==false  #没有戒指，那么就在区间中随机取
+                @防御成长 +=(low*1000.0+rand((high-low)*1000))/1000.0
+             else  # 其它的数值，那么就取最低的，为的是取得最低的极限统计。
+                @防御成长 += low 
+            end
        when  2  # 增加速度
              low, high=get_star_increase_range(@速度成长)
-             if ring==true then   # 如果有皇后的祝福，成长就取最大
-             @速度成长 +=high
-             else   #没有皇后之祝福，那么就在区间中随机取
-             @速度成长 +=(low*1000.0+rand((high-low)*1000))/1000.0
-
-             end      
+            if ring==true then   # 如果有皇后的祝福，成长就取最大
+                @速度成长 +=high
             
+             elsif ring==false  #没有戒指，那么就在区间中随机取
+                @速度成长 +=(low*1000.0+rand((high-low)*1000))/1000.0
+             else  # 其它的数值，那么就取最低的，为的是取得最低的极限统计。
+                @速度成长 += low 
+            end
    end 
+
 
    # 重新计算星级，因为成长数值变了。
    # 星级，星级等于三种属性成长之和，除以10后向上取整
@@ -361,9 +370,26 @@ class Pet
      @cur_attack=@init_attack
      @cur_defend=@init_defend
      @cur_speed=@init_speed
-    
+
+     # 记录结婚次数与星级记录
+     temp=[]
+     temp << @世代.to_i
+     temp << @星级.to_i
+     # 记录到数组中去。 
+     @结婚次数与星级记录 << temp 
 
   end 
+
+  # 把结婚次数和星级记录写到csv文件中。
+  # 文件名含伙伴名，这样用于区分。
+  def write_version_star_record
+       file_name=@name.to_s+"_version_star_record.csv"
+       f=File.new(file_name,"a")
+       @结婚次数与星级记录.each {|r|
+          f.write(r[0].to_s+","+r[1].to_s+"\n")
+       }
+       f.close
+  end
 
   # 顿悟
   # 条件：伙伴到了某个等级，例如50级, 并且小于前世最高等级，则一下子回忆起他前世的最高等级，这叫顿悟。

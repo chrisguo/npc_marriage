@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 # test Pet
+# 没有结婚戒指情况下的结婚测试。
 require "./pet.rb"
 
-xiao_zhang= Pet.new("老王")
+xiao_zhang= Pet.new("张飞")
 xiao_zhang.sex=0
 
 xiao_zhang_wife= Pet.new("小龙女")
@@ -20,7 +21,7 @@ puts ""
 
 xiao_zhang_wife.level_up
 if xiao_zhang.can_get_married?(xiao_zhang_wife) then
-  xiao_zhang.marriage(xiao_zhang_wife)
+  xiao_zhang.marriage(xiao_zhang_wife,ring=false)
         puts "哇，结婚了！新伙伴诞生了！革命事业我来扛，一代更比一代强。"
  
 else
@@ -43,7 +44,7 @@ end
 puts xiao_zhang_wife1.inspect
 
 if xiao_zhang.can_get_married?(xiao_zhang_wife1) then
-  xiao_zhang.marriage(xiao_zhang_wife1)
+  xiao_zhang.marriage(xiao_zhang_wife1,ring=false)
   puts "哇，结婚了！新伙伴诞生了！革命事业我来扛，一代更比一代强。"
 else
   puts "Not marriaged, god!"
@@ -66,7 +67,7 @@ end
 puts xiao_zhang_wife2.inspect
 
 if xiao_zhang.can_get_married?(xiao_zhang_wife2) then
-  xiao_zhang.marriage(xiao_zhang_wife2)
+  xiao_zhang.marriage(xiao_zhang_wife2,ring=false)
         puts "哇，结婚了！新伙伴诞生了！革命事业我来扛，一代更比一代强。"
 else
   puts "Not marriaged, god!"
@@ -91,7 +92,7 @@ puts ""
      40.times{xiao_zhang_wife2.level_up}
      # 测试能否结婚。
      if xiao_zhang.can_get_married?(xiao_zhang_wife2) then
-       xiao_zhang.marriage(xiao_zhang_wife2)
+       xiao_zhang.marriage(xiao_zhang_wife2,ring=false)
        
        puts "哇，结婚了！新伙伴诞生了！革命事业我来扛，一代更比一代强。"
      else
@@ -125,7 +126,7 @@ puts ""
      40.times{xiao_zhang_wife2.level_up}
      # 测试能否结婚。
      if xiao_zhang.can_get_married?(xiao_zhang_wife2) then
-       xiao_zhang.marriage(xiao_zhang_wife2)
+       xiao_zhang.marriage(xiao_zhang_wife2,ring=false)
        puts "哇，结婚了！新伙伴诞生了！革命事业我来扛，一代更比一代强。"
      else
        puts "Not marriaged, god!"
